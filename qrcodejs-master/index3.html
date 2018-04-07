@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ko" lang="ko">
   <head>
     <title>Place Autocomplete</title>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
@@ -27,7 +27,6 @@
         box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
       }
 
-      #origin-input,
       #destination-input {
         background-color: #fff;
         font-family: Roboto;
@@ -39,7 +38,6 @@
         width: 200px;
       }
 
-      #origin-input:focus,
       #destination-input:focus {
         border-color: #4d90fe;
       }
@@ -58,15 +56,21 @@
       }
 
     </style>
+    <script type="text/javascript" src="jquery.min.js"></script>
+    <script type="text/javascript" src="qrcode.js"></script>
   </head>
   <body>
    <!-- <input id="origin-input" class="controls" type="text"
         placeholder="Enter an origin location"> -->
 
     <input id="destination-input" class="controls" type="text"
-        placeholder="Enter a destination location">
+        placeholder="Enter a destination location" name="text">
+        <input type="submit" name="Genrate" value="Genrate" id="btn1">
 
-    <div id="mode-selector" class="controls">
+        <div id="qrcode" style="width:100px; height:100px; margin-top:15px; margin-left: 50%; display: none;"></div>
+
+
+    <div id="mode-selector" class="controls" style="display: none;">
       <input type="radio" name="type" id="changemode-walking" checked="checked">
       <label for="changemode-walking">Walking</label>
 
@@ -77,7 +81,7 @@
       <label for="changemode-driving">Driving</label>
     </div>
 
-    <div id="map"></div>
+    <div id="map" style="display: none;"></div>
 
     <script>
       // This example requires the Places library. Include the libraries=places
@@ -85,7 +89,7 @@
       // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
 
 
-
+      var k;
     var map, infoWindow,pos;
       function initMap() {
         map = new google.maps.Map(document.getElementById('map'), {
@@ -167,12 +171,14 @@
         autocomplete.bindTo('bounds', this.map);
         autocomplete.addListener('place_changed', function() {
           var place = autocomplete.getPlace();
+          k = place.place_id;
           if (!place.place_id) {
             window.alert("Please select an option from the dropdown list.");
             return;
           }
           if (mode === 'DEST') {
             me.destinationPlaceId = place.place_id;
+
           }
           me.route();
         });
@@ -184,8 +190,6 @@
           return;
         }
         var me = this;
-        console.log(pos.lat+pos.lng);
-
         this.directionsService.route({
           origin: {lat : pos.lat, lng: pos.lng},
           destination: {'placeId': this.destinationPlaceId},
@@ -199,8 +203,37 @@
         });
       };
 
+  var qrcode = new QRCode(document.getElementById("qrcode"), {
+  width : 100,
+  height : 100
+});
+
+
+function makeCode () {    
+  var elText = document.getElementById("destination-input");
+  
+  if (k != null) {
+    var link = "http://172.23.0.112/dotslash/HackAtdotslash/mapapp/finalmap.php?key=";
+    qrcode.makeCode(link+k);
+  } else {}
+  
+}
+
+makeCode();
+
+$("#destination-input").
+  on("blur", function () {
+    makeCode();
+  }).
+  on("keydown", function (e) {
+    if (e.keyCode == 13) {
+      makeCode();
+    }
+  });
+$("#btn1").click(function(){
+  $("#qrcode").show();
+});
     </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDz6PMdl_gLk5jbf639FelVugWBkyN-ufw&libraries=places&callback=initMap"
-        async defer></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDz6PMdl_gLk5jbf639FelVugWBkyN-ufw&libraries=places&callback=initMap"></script>
   </body>
 </html>
