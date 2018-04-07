@@ -3,13 +3,12 @@ body {
     padding: 0;
     font-family: 'Padauk', sans-serif;
     background: url(../images/login_background.jpg);
-    overflow-y: hidden;
 }
 
 #header {
     width: 100%;
     height: 9vh;
-    background-color: white;
+    background-color: gray;
     float: left;
     box-shadow: 1px 1px 5px gray;
     text-align: center;
@@ -21,10 +20,18 @@ body {
     letter-spacing: 2px;
 }
 
+li {
+    float: right;
+    text-decoration: none;
+    list-style-type: none;
+    padding: 8px 16px;
+}
+
 #main {
     float: left;
     width: 100%;
     margin-top: 5%;
+    text-align: center;
 }
 
 #upload_form {
@@ -48,6 +55,21 @@ body {
     display: block;
     margin: auto;
     width: 60%;
+    margin-top: 5%;
+    height: 5vh;
+    font-family: 'Padauk', sans-serif;
+    font-size: 18px;
+    padding-left: 2%;
+    color: black;
+    border-radius: 2px;
+    border: 1px solid gray;
+    outline: 0;
+}
+
+#subject_name {
+    display: block;
+    margin: auto;
+    width: 62%;
     margin-top: 5%;
     height: 5vh;
     font-family: 'Padauk', sans-serif;
@@ -92,4 +114,28 @@ body {
 
 #upload_button:hover {
     cursor: pointer;
+}
+
+#dept_folder_table {
+    width: 100%;
+    margin-top: 3%;
+}
+
+#dept_folder_table img {
+    width: 50%;
+}
+
+#video_div {
+    border: 1px solid gray;
+    width: 31%;
+    float: left;
+    margin: 1%;
+    border-radius: 3px;
+    box-shadow: 1px 10px 40px gray;
+}
+
+a {
+    font-size: 18px;
+    color: gray;
+    text-decoration: none;
 }

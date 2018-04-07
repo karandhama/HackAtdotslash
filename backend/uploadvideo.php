@@ -2,7 +2,9 @@
     include("database.php");
     if(isset($_POST['upload_button'])) {
         $dept_name = $_POST['dept_name'];
+        $dept_name = str_replace(' ', '', $dept_name);
         $subject_name = $_POST['subject_name'];
+        $subject_name = str_replace(' ', '', $subject_name);
         $lecture_name = $_POST['lecture_name'];
 
         if(!file_exists("../video/".$dept_name)) {
@@ -41,6 +43,8 @@
     <title>Upload Videos</title>
     <link href="https://fonts.googleapis.com/css?family=Padauk" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="../css/videolectures.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 </head>
 <body>
     <div class="container">
@@ -65,7 +69,9 @@
                         </tr>
                         <tr>
                             <th>
-                                <input type="text" name="subject_name" id="subject_name" placeholder="Enter the Subject name">
+                                <select id="subject_name" name="subject_name">
+
+                                </select>
                             </th>
                         </tr>
                         <tr>
@@ -86,7 +92,41 @@
                     </table>
                 </form>
             </div>
+            <div>
+                <a href="../app/videolectures.html">Back</a>
+            </div>
         </div>
     </div>
 </body>
+<script type="text/javascript">
+    $(document).ready(function() {
+        var department = ['ComputerDepartment','ElectronicsDepartment','MechanicalDepartment','EletricalDepartment',
+        'CivilDepartment','ChemicalDepartment'];
+
+        department['Computer Department'] = ['Computer Organization','DBMS','Data Structures & Algorithms',
+        'Theoretical Computer Science','Microprocessor and Interfacing Techniques','Design and Analysis of Algorithms','AIML','Computer Networks',
+        'Operating Systems','System Software','Computer Graphics','ITA','Software Engineering','Cryptography and Network Security','Principles of Programming Language',
+        'Distributed Algorithms'];
+
+        department['Mechanical Department'] = [];
+        department['Electronics Department'] = [];
+        department['Electrical Department'] = [];
+        department['Civil Department'] = [];
+        department['Chemical Department'] = [];
+        var dept_name = $("#dept_name").val();
+        var length = department[dept_name].length;
+        for (var i = 0; i < length; i++) {
+            $("#subject_name").append('<option>'+ department[dept_name][i] +'</option>');
+        };
+
+        $("#dept_name").change(function() {
+            var dept_name = $("#dept_name").val();
+            var length = department[dept_name].length;
+            $("#subject_name").empty();
+            for (var i = 0; i < length; i++) {
+                $("#subject_name").append('<option>'+ department[dept_name][i] +'</option>');
+            };
+        });
+    });
+</script>
 </html>
