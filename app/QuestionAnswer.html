@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Question Answer</title>
+    <link href="https://fonts.googleapis.com/css?family=Padauk" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../css/question.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div id="header">
+            <h2>Question-Answer time</h2>
+        </div>
+        <div id="main">
+            <textarea id="question" name="question"></textarea>
+            <button id="post" name="post">post</button>
+            <h3>Questions : </h3>
+            <div id="questions_div">
+            </div>
+        </div>
+    </div>
+</body>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $.ajax({
+            url: "../backend/show_questions.php",
+            method: "post",
+            success: function(data) {
+                $("#questions_div").html(data);
+            },
+            error: function(error) {
+                alert(error.status);
+            }
+        });
+        $("#post").click(function() {
+            var question = $("#question").val();
+            alert(question);
+            $.ajax({
+                url: "../backend/question_add.php",
+                method: "post",
+                data: {question:question},
+                beforeSend: function() {
+                    $("#post").text("Loading...");
+                },
+                success: function(data) {
+                    $("#post").text("post");
+                    location.reload(true);
+                },
+                error: function(error) {
+                    alert(error.status);
+                }
+            });
+        });
+    });
+</script>
+</html>
